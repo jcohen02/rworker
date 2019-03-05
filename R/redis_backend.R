@@ -61,3 +61,44 @@ RedisBackend <- R6::R6Class(
         redis_client = NULL
     )
 )
+
+
+#' RedisBackendSSL object
+#'
+#' This object establishes an interface with Redis, via an SSL connection, 
+#' as a results backend.
+#'
+#' @section Usage:
+#' Using the RedisBackendSSL class to make an SSL connection to a redis 
+#' backend requires details of a cient key and certificate, and an  
+#' associated CA certificate. This information is used by the underlying  
+#' redux library that is used by rworker to make a connection to redis.  
+#' The environment variables that must be set are:
+#' 
+#' REDIS_SSL_CERT_PATH: Full path to the certificate used for the connection
+#' REDIS_SSL_KEY_PATH: Full path to the key used for the connection
+#' REDIS_SSL_CA_PATH: Full path to the CA certificate
+#' 
+#' ```
+#' backend <- RedisBackend$new(host='localhost', port=6379)
+#' backend$store_result(123, TRUE)
+#' ```
+#' @param host Character. Message broker instance address.
+#' @param port Numeric. Message broker port.
+#' @name RedisBackendSSL
+NULL
+
+#' @export 
+RedisBackendSSL <- R6::R6Class(
+		'RedisBackendSSL',
+		inherit = RedisBackend,
+		public = list(
+				initialize = function(host, port) {
+					self$host = host
+					self$port = port
+					url <- paste('rediss://', self$host, ':', self$port,
+							sep="")
+					private$redis_client = redux::hiredis(url = url)
+				}
+		)
+)

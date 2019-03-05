@@ -1,7 +1,8 @@
 #' @include redis_queue.R
 
 QUEUES = list(
-    "redis"=RedisQueue
+    "redis"=RedisQueue,
+    "rediss"=RedisQueueSSL
 )
 
 queue = function(url, name) {

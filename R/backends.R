@@ -1,7 +1,8 @@
 #' @include redis_backend.R
 
 BACKENDS = list(
-    "redis"=RedisBackend
+    "redis"=RedisBackend,
+	"rediss"=RedisBackendSSL
 )
 
 backend = function(url) {
